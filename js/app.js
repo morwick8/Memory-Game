@@ -1,6 +1,8 @@
 /*Michelle Orwick
  * Create a list that holds all of your cards
  */
+//var card = document.getElementsByClassName("card");
+//var currentCards = [...card];
 var listItem = document.getElementsByTagName('li');
 var currentCards = [];
 for (var i = 0; i < listItem.length; i++) {
@@ -9,16 +11,38 @@ for (var i = 0; i < listItem.length; i++) {
     };
 };
 console.log(currentCards);
+//console.log(currentCards[0]);
+var shuffledCards = shuffle(currentCards);
+console.log(shuffledCards[0]);
+console.log(shuffledCards.length);
+var lis = document.querySelectorAll('#showingDeck li');
+for(var i=0; li=lis[i]; i++) {
+    li.parentNode.removeChild(li);
+}
+//var deck = document.querySelector(".deck");
+//childNodes = deck.innerHTML;
+//deck.remove(childNodes);
+for (var i = 0; i < shuffledCards.length; i++) {
+    var newCard = shuffledCards[i];
+    console.log(newCard);
+    var ul = document.getElementById("showingDeck");
+    var li = document.createElement("li");
+    li.innerHTML = shuffledCards[i];
+    li.className = "card";
+    document.getElementById("showingDeck").appendChild(li);
+
+};
+
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
-const faceUp = 'card open show';
-for (var i = 0; i < currentCards.length; i++){
-  currentCards[i].className = faceUp;
-}
+//const faceUp = 'card open show';
+//for (var i = 0; i < currentCards.length; i++){
+//  currentCards[i].className = faceUp;
+//}
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
