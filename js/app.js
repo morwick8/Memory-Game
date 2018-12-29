@@ -1,15 +1,24 @@
 /*Michelle Orwick
  * Create a list that holds all of your cards
  */
-
-
+var listItem = document.getElementsByTagName('li');
+var currentDeck = [];
+for (var i = 0; i < listItem.length; i++) {
+    if (listItem[i].className === 'card') {
+      currentDeck.push(listItem[i].innerHTML);
+    };
+};
+console.log(currentDeck);
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
-
+const faceUp = 'card open show';
+for (var i = 0; i < currentDeck.length; i++){
+  currentDeck[i].className = faceUp;
+}
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
