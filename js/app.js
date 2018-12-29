@@ -28,7 +28,7 @@ for (var i = 0; i < shuffledCards.length; i++) {
     var ul = document.getElementById("showingDeck");
     var li = document.createElement("li");
     li.innerHTML = shuffledCards[i];
-    li.className = "card";
+    li.className = "card open show";
     document.getElementById("showingDeck").appendChild(li);
 
 };
