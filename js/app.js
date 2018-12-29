@@ -2,13 +2,13 @@
  * Create a list that holds all of your cards
  */
 var listItem = document.getElementsByTagName('li');
-var currentDeck = [];
+var currentCards = [];
 for (var i = 0; i < listItem.length; i++) {
-    if (listItem[i].className === 'card') {
-      currentDeck.push(listItem[i].innerHTML);
+    if (listItem[i].className === 'card' || listItem[i].className === 'card match' || listItem[i].className === 'card open show'){
+      currentCards.push(listItem[i].innerHTML);
     };
 };
-console.log(currentDeck);
+console.log(currentCards);
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -16,8 +16,8 @@ console.log(currentDeck);
  *   - add each card's HTML to the page
  */
 const faceUp = 'card open show';
-for (var i = 0; i < currentDeck.length; i++){
-  currentDeck[i].className = faceUp;
+for (var i = 0; i < currentCards.length; i++){
+  currentCards[i].className = faceUp;
 }
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
