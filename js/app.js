@@ -1,43 +1,34 @@
 /*Michelle Orwick
  * Create a list that holds all of your cards
  */
-var listItem = document.getElementsByTagName('li');
-var currentCards = [];
-for (var i = 0; i < listItem.length; i++) {
-    if (listItem[i].className === 'card' || listItem[i].className === 'card match' || listItem[i].className === 'card open show'){
+
+function resetGame() {
+  var listItem = document.getElementsByTagName('li');
+  var currentCards = [];
+  for (var i = 0; i < listItem.length; i++) {
+    if (listItem[i].classList.contains('card')) {
       currentCards.push(listItem[i].innerHTML);
     };
-};
-console.log(currentCards);
-//console.log(currentCards[0]);
-var shuffledCards = shuffle(currentCards);
-console.log(shuffledCards[0]);
-console.log(shuffledCards.length);
-var lis = document.querySelectorAll('#showingDeck li');
-for(var i=0; li=lis[i]; i++) {
+  };
+  var shuffledCards = shuffle(currentCards);
+  var lis = document.querySelectorAll('#showingDeck li');
+  for(var i=0; li=lis[i]; i++) {
     li.parentNode.removeChild(li);
-}
-for (var i = 0; i < shuffledCards.length; i++) {
+  };
+  for (var i = 0; i < shuffledCards.length; i++) {
     var newCard = shuffledCards[i];
     console.log(newCard);
     var ul = document.getElementById("showingDeck");
     var li = document.createElement("li");
     li.innerHTML = shuffledCards[i];
-    li.className = "card";
-    document.getElementById("showingDeck").addEventListener("click",function(e) {
-      if (li.classList.contains('open') ) {
-        const list = e.target.classList;
-        console.log(list);
-        list.remove('open', 'show');
-        console.log("clicked changing classname to card");
-      } else {
-        const list = e.target.classList;
-        console.log(list);
-        list.add('open', 'show');
-      };
-    });
+    li.className = 'card';
     document.getElementById("showingDeck").appendChild(li);
-
+    console.log(li);
+    document.getElementById("showingDeck").addEventListener("click", processClicks(li));
+  };
+  resetTimer();
+  resetStars();
+  resetMoveCounter();
 };
 
 /*
@@ -65,7 +56,33 @@ function shuffle(array) {
     return array;
 }
 
+function processClicks(e) {
+  console.log('waiting for click');
+    const list = e.classList;
+    console.log(list);
+    if (list.contains('open') ) {
+      console.log(list);
+      list.remove('open', 'show');
 
+      console.log(list);
+      console.log("clicked changing classname to card");
+    } else {
+      list.add('open', 'show');
+    };
+  };
+
+function resetTimer() {
+  console.log('resetting timer');
+};
+function resetStars() {
+  console.log('resetting stars');
+};
+
+function resetMoveCounter() {
+  console.log('resetting moves');
+};
+
+resetGame();
 
 
 /*
