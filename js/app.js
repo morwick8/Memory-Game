@@ -1,8 +1,6 @@
 /*Michelle Orwick
  * Create a list that holds all of your cards
  */
-//var card = document.getElementsByClassName("card");
-//var currentCards = [...card];
 var listItem = document.getElementsByTagName('li');
 var currentCards = [];
 for (var i = 0; i < listItem.length; i++) {
@@ -19,16 +17,25 @@ var lis = document.querySelectorAll('#showingDeck li');
 for(var i=0; li=lis[i]; i++) {
     li.parentNode.removeChild(li);
 }
-//var deck = document.querySelector(".deck");
-//childNodes = deck.innerHTML;
-//deck.remove(childNodes);
 for (var i = 0; i < shuffledCards.length; i++) {
     var newCard = shuffledCards[i];
     console.log(newCard);
     var ul = document.getElementById("showingDeck");
     var li = document.createElement("li");
     li.innerHTML = shuffledCards[i];
-    li.className = "card open show";
+    li.className = "card";
+    document.getElementById("showingDeck").addEventListener("click",function(e) {
+      if (li.classList.contains('open') ) {
+        const list = e.target.classList;
+        console.log(list);
+        list.remove('open', 'show');
+        console.log("clicked changing classname to card");
+      } else {
+        const list = e.target.classList;
+        console.log(list);
+        list.add('open', 'show');
+      };
+    });
     document.getElementById("showingDeck").appendChild(li);
 
 };
@@ -57,6 +64,8 @@ function shuffle(array) {
 
     return array;
 }
+
+
 
 
 /*
