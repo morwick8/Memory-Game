@@ -9,9 +9,12 @@ newDeck.addEventListener('click', processClicks);
 var shuffledCards = [];
 var matchNum = 0;
 var moves = 0;
+var seconds = 0;
+var finalTime = 0;
+var starCount = 3;
+gameEnd = false;
 
 function resetGame() {
-  resetTimer();
   resetStars();
   resetMoveCounter();
 
@@ -52,25 +55,25 @@ function processClicks(event) {
           console.log(List);
           return false;
       } else if (!List.contains('open')) { //if the card is face down
-          console.log(List);
-          console.log('card is face down');
+//          console.log(List);
+//          console.log('card is face down');
           List.add('open'); //turn the card face up
           List.add('show');
-          console.log(List);
-          console.log('turning card face up ');
+//          console.log(List);
+//          console.log('turning card face up ');
               if (openCardContent === undefined || openCardContent.length == 0) { //and there is not another open card
-                console.log("there is not another open card");
+//                console.log("there is not another open card");
                 openCardContent[0] = faceValue; //make this the open card
                 return false;
               } else { //if there's already another open card, check this one to see if it matches open card
-                console.log("openCardContent does not equal empty array, check for match");
+//                console.log("openCardContent does not equal empty array, check for match");
                 var match = checkMatch(faceValue); //this returns true if it matches a card already face up
                 if (match) {
                   checkNumberOfMatches();
                 };
                 if (!match) {
-                  console.log("going to unmatchedPair");
-                  setTimeout(unmatchedPair(faceValue,openCardContent[0]), 10000);
+  //                console.log("going to unmatchedPair");
+                  setTimeout(function() {unmatchedPair(faceValue,openCardContent[0])}, 1000);
                 };
                 openCardContent = [];
               };
@@ -171,6 +174,9 @@ function unmatchedPair(card1,card2) {
 
 function recordMoves() {
   moves = moves+1;
+  if (moves === 1) {
+    startTimer();
+  };
   var move = document.getElementsByClassName('moves');
   move[0].innerHTML = moves;
   console.log("moves is now" + move[0]);
@@ -181,24 +187,32 @@ function recordMoves() {
 function checkNumberOfMatches() {
   matchNum = matchNum +1;
   if (matchNum === 8) {
-    stopTimer();
+    gameEnd = true;
+    finalTime = seconds;
     postModal();
   }
 };
 
-function stopTimer() {
-  console.log("timer stopped");
-}
+function startTimer() {
+  if (!gameEnd) {
+    document.getElementById('timer').innerHTML = seconds + " Seconds";
+    seconds++;
+    setTimeout(startTimer, 1000);
+  };
+};
 
 function starTracker(moves) {
-  if (moves===36 || moves===42 || moves == 60) {
+  if (moves===30 || moves===42) {
     var lis = document.querySelectorAll('#starPanel li');
     lis[0].parentNode.removeChild(lis[0]);
+    starCount--;
   };
 };
 
 function postModal() {
-  console.log("show postModal");
+  console.log("final time is " + finalTime);
+  console.log("you scored " + starCount + "stars");
+
 };
 
 /*
