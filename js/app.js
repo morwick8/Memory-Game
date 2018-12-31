@@ -8,7 +8,7 @@ var newDeck = document.getElementById('showingDeck');
 newDeck.addEventListener('click', processClicks);
 var shuffledCards = [];
 var matchNum = 0;
-
+var moves = 0;
 
 function resetGame() {
   resetTimer();
@@ -40,6 +40,7 @@ function resetGame() {
 
 //this function was suggested by Mark L on stackoverflow
 function processClicks(event) {
+  recordMoves();
   var clicked = event.target;
   var listener = event.currentTarget;
   var List = event.target.classList;
@@ -167,6 +168,16 @@ function unmatchedPair(card1,card2) {
       };
     };
   };
+
+function recordMoves() {
+  moves = moves+1;
+  var move = document.getElementsByClassName('moves');
+  move[0].innerHTML = moves;
+  console.log("moves is now" + move[0]);
+//  move.innerHTML.remove();
+//  move.innerHTML.add(moves);
+};
+
 
 function checkNumberOfMatches() {
   matchNum = matchNum +1;
