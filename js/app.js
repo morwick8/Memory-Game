@@ -174,8 +174,7 @@ function recordMoves() {
   var move = document.getElementsByClassName('moves');
   move[0].innerHTML = moves;
   console.log("moves is now" + move[0]);
-//  move.innerHTML.remove();
-//  move.innerHTML.add(moves);
+  starTracker(moves);
 };
 
 
@@ -183,7 +182,6 @@ function checkNumberOfMatches() {
   matchNum = matchNum +1;
   if (matchNum === 8) {
     stopTimer();
-    postStars();
     postModal();
   }
 };
@@ -192,8 +190,11 @@ function stopTimer() {
   console.log("timer stopped");
 }
 
-function postStars() {
-  console.log("post stars");
+function starTracker(moves) {
+  if (moves===36 || moves===42 || moves == 60) {
+    var lis = document.querySelectorAll('#starPanel li');
+    lis[0].parentNode.removeChild(lis[0]);
+  };
 };
 
 function postModal() {
