@@ -46,42 +46,51 @@ function processClicks(event) {
   recordMoves();
   var clicked = event.target;
   var listener = event.currentTarget;
+  console.log(listener);
   var List = event.target.classList;
+  console.log('List at start of processClicks' + List);
   var faceValue = event.target.innerHTML;
   if (clicked !== listener) {
-    console.log('clicked');
   //this goes through elements to find which one matches click
       if (List.contains('match'))  { //if the card was already matched it ignores it and returns false
-          console.log(List);
+          console.log('matched card' + List);
           return false;
       } else if (!List.contains('open')) { //if the card is face down
-//          console.log(List);
-//          console.log('card is face down');
+          console.log('List at beginning of elseif !open' + List);
           List.add('open'); //turn the card face up
           List.add('show');
-//          console.log(List);
-//          console.log('turning card face up ');
+          console.log('List after card flip open' + List);
               if (openCardContent === undefined || openCardContent.length == 0) { //and there is not another open card
-//                console.log("there is not another open card");
+  //              console.log("1st open card");
                 openCardContent[0] = faceValue; //make this the open card
                 return false;
               } else { //if there's already another open card, check this one to see if it matches open card
-//                console.log("openCardContent does not equal empty array, check for match");
-                var match = checkMatch(faceValue); //this returns true if it matches a card already face up
+                var openCard = openCardContent[0];
+                console.log("List before checkMatch" + List);
+//                console.log('faceValue is ' + faceValue)
+//                console.log('openCardContent[0] is ' + openCardContent[0]);
+                var match = checkMatch(faceValue, openCardContent[0]); //this returns true if it matches a card already face up
+                console.log("List after checkMatch " + List);
                 if (match) {
                   checkNumberOfMatches();
+                  console.log("List after checkNumberOfMatches " + List);
                 };
                 if (!match) {
-  //                console.log("going to unmatchedPair");
-                  setTimeout(function() {unmatchedPair(faceValue,openCardContent[0])}, 1000);
+//                  console.log('checkMatch returned match = false');
+                  console.log('List before unmatchedPair ' + List);
+                  setTimeout(function() {unmatchedPair(faceValue,openCard)}, 1000);
+                  console.log("List after unmatchedPair" + List);
                 };
                 openCardContent = [];
               };
+          console.log("List after elseif !open is " +List);
           return false;
         } else { //if the card is already face up but clicked again, turn face down
-          console.log("turning card back face down");
           clicked.classList.toggle('open');
           clicked.classList.toggle('show');
+          console.log("turning card back face down " + List);
+          faceValue = '';
+          openCardContent = [];
           return false;
         };
   } else {
@@ -91,13 +100,13 @@ function processClicks(event) {
 };
 
 //this checks for another open card,if there is another open card it checks for match.  If there's a match it returns true, and resets openCard to "".
-function checkMatch(faceValue) {
+function checkMatch(faceValue, openCard) {
+  console.log('initial value of openCardContent[0] in checkMatch is ' + openCard);
   var cardList = document.getElementsByTagName('li');
-  console.log('checking for match');
-    if (faceValue === openCardContent[0]) { //if clicked card matches already open card
+    if (faceValue === openCard) { //if clicked card matches already open card
       for (var i = 0; i <cardList.length; i++) {
         var findCard = cardList.item(i);
-        console.log("There's already an open card, checking" + 'cardList.item(i) is ' + findCard);
+//        console.log("There's already an open card, checking" + 'cardList.item(i) is ' + findCard);
         if (findCard.innerHTML === faceValue) {
           console.log('match found');
           findCard.classList.add('match');
@@ -136,37 +145,37 @@ function shuffle(array) {
 
 
 function resetTimer() {
-  console.log('resetting timer');
+//  console.log('resetting timer');
 };
 function resetStars() {
-  console.log('resetting stars');
+//  console.log('resetting stars');
 };
 
 function resetMoveCounter() {
-  console.log('resetting moves');
+//  console.log('resetting moves');
 };
 
 function showBeforeTurn(findCard) {
 //  findCard.classList.remove("open");
 //  findCard.classList.remove("show");
-  console.log("classList after time delay " + findCard.classList);
+//  console.log("classList after time delay " + findCard.classList);
 };
 
-function unmatchedPair(card1,card2) {
+function unmatchedPair(faceValue,openCard) {
+  console.log("faceValue = " +faceValue);
+  console.log("openCardContent " +openCard);
   var cardList = document.getElementsByTagName('li');
-  console.log("faceValue = " +card1);
-  console.log("openCardContent " +card2);
   for (var i = 0; i <cardList.length; i++) {
-      console.log(cardList.item(i).classList + "before");
-      if (cardList.item(i).innerHTML === card1) {
+//      console.log(cardList.item(i).classList + "before");
+      if (cardList.item(i).innerHTML === faceValue) {
         cardList.item(i).classList.remove('open');
         cardList.item(i).classList.remove('show');
-        console.log(cardList.item(i).innerHTML + cardList.item(i).classList + "after");
+        console.log('flip face down faceValue card');
       };
-      if (cardList.item(i).innerHTML === card2) {
+      if (cardList.item(i).innerHTML === openCard) {
         cardList.item(i).classList.remove('open');
         cardList.item(i).classList.remove('show');
-        console.log(cardList.item(i).innerHTML + cardList.item(i).classList + "after");
+        console.log('flip face down openCardContent card');
 
       };
     };
@@ -179,7 +188,7 @@ function recordMoves() {
   };
   var move = document.getElementsByClassName('moves');
   move[0].innerHTML = moves;
-  console.log("moves is now" + move[0]);
+//  console.log("moves is now" + move[0]);
   starTracker(moves);
 };
 
@@ -195,8 +204,8 @@ function checkNumberOfMatches() {
 
 function startTimer() {
   if (!gameEnd) {
-    document.getElementById('timer').innerHTML = seconds + " Seconds";
     seconds++;
+    document.getElementById('timer').innerHTML = seconds + " Seconds";
     setTimeout(startTimer, 1000);
   };
 };
