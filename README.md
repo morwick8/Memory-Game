@@ -1,20 +1,19 @@
 # Memory Game Project
 
-## Table of Contents
 
-* [Instructions](#instructions)
-* [Contributing](#contributing)
+## How to Play
 
-## Instructions
+To Play:
 
-The starter project has some HTML and CSS styling to display a static version of the Memory Game project. You'll need to convert this project from a static project to an interactive one. This will require modifying the HTML and CSS files, but primarily the JavaScript file.
+This is your class Matching Game.  
 
-To get started, open `js/app.js` and start building out the app's functionality
+- Select a card to reveal its symbol.
+- Select a 2nd card to reveal its symbol.  If the cards are the same you have a match!
+- If the cards don't match, they will be turned back over.  Try to remember where the cards are.
+-  Select two more cards, trying to find matching symbols.
+- You'll see how many moves you've made, seconds have past, and stars you've earned.
+- Try and match all the cards in the least amount of time.
+- You can play as many times as you want by pressing the Reset button.
 
-For specific, detailed instructions, look at the project instructions in the [Udacity Classroom](https://classroom.udacity.com/me).
-
-## Contributing
-
-This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.
-
-For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
+This program was authored by Michelle Orwick and can be found at
+https://github.com/morwick8/Memory-Game
