@@ -1,11 +1,11 @@
-/*Michelle Orwick
- * Create a list that holds all of your cards
+/* Michelle Orwick
+ * This program is a classic card matching game. The object is to match all
+ * 8 pairs in the least amount of moves and as quickly as possible.
  */
 
+//Set global variables
+
 var openCardContent = [];
-resetGame();
-var newDeck = document.getElementById('showingDeck');
-newDeck.addEventListener('click', processClicks);
 var shuffledCards = [];
 var matchNum = 0;
 var moves = 0;
@@ -14,9 +14,34 @@ var finalTime = 0;
 var starCount = 3;
 gameEnd = false;
 
+//Set all EventListeners
+
+var newDeck = document.getElementById('showingDeck');
+newDeck.addEventListener('click', processClicks);
+//var resetButton = document.getElementsByClassName('restart');
+//resetButton.addEventListener('click', resetGame);
+
+//Start the game
+
+resetGame();
+
+
+//This function resets all variables, and sets up the gameboard for a new game
+
 function resetGame() {
-  resetStars();
-  resetMoveCounter();
+
+// reset all global variables
+
+  openCardContent = [];
+  var shuffledCards = [];
+  var matchNum = 0;
+  var moves = 0;
+  var seconds = 0;
+  var finalTime = 0;
+  var starCount = 3;
+  gameEnd = false;
+
+  //build deck with all class 'card' elements
 
   var listItem = document.getElementsByTagName('li');
   var currentCards = [];
@@ -25,6 +50,9 @@ function resetGame() {
       currentCards.push(listItem[i].innerHTML);
     };
   };
+
+  //shuffle the deck
+
   shuffledCards = shuffle(currentCards);
   var lis = document.querySelectorAll('#showingDeck li');
   for(var i=0; li=lis[i]; i++) {
@@ -37,58 +65,58 @@ function resetGame() {
     li.innerHTML = shuffledCards[i];
     li.className = 'card';
     document.getElementById("showingDeck").appendChild(li);
-//    console.log(li);
   };
 };
 
-//this function was suggested by Mark L on stackoverflow
+
+/* This function defines what to do when the user clicks on game elements
+*/
+
 function processClicks(event) {
+  //Track every click as a move
   recordMoves();
+
+  /* Mark L on stackoverflow offered me a suggestion on how to handle the
+  * clicked, listener, and event.target elements because I was stuck
+  */
   var clicked = event.target;
   var listener = event.currentTarget;
-  console.log(listener);
   var List = event.target.classList;
-  console.log('List at start of processClicks' + List);
   var faceValue = event.target.innerHTML;
+
+  /*If the user clicks on a card, this checks whether the card is already
+   * matched, whether it is face down, or whether it is "open", meaning face up
+   *and unmatched.
+   */
+
   if (clicked !== listener) {
-  //this goes through elements to find which one matches click
-      if (List.contains('match'))  { //if the card was already matched it ignores it and returns false
-          console.log('matched card' + List);
-          return false;
-      } else if (!List.contains('open')) { //if the card is face down
-          console.log('List at beginning of elseif !open' + List);
-          List.add('open'); //turn the card face up
+
+      /*if the card was already matched it ignores it, if there's not an open card it
+      * opens the card, and if there's an open card it looks for a match.
+      */
+      if (List.contains('match'))  {
+            return false;
+      } else if (!List.contains('open')) {
+          List.add('open');
           List.add('show');
-          console.log('List after card flip open' + List);
-              if (openCardContent === undefined || openCardContent.length == 0) { //and there is not another open card
-  //              console.log("1st open card");
-                openCardContent[0] = faceValue; //make this the open card
+              if (openCardContent === undefined || openCardContent.length == 0) {
+                openCardContent[0] = faceValue;
                 return false;
-              } else { //if there's already another open card, check this one to see if it matches open card
+              } else {
                 var openCard = openCardContent[0];
-                console.log("List before checkMatch" + List);
-//                console.log('faceValue is ' + faceValue)
-//                console.log('openCardContent[0] is ' + openCardContent[0]);
                 var match = checkMatch(faceValue, openCardContent[0]); //this returns true if it matches a card already face up
-                console.log("List after checkMatch " + List);
                 if (match) {
                   checkNumberOfMatches();
-                  console.log("List after checkNumberOfMatches " + List);
                 };
                 if (!match) {
-//                  console.log('checkMatch returned match = false');
-                  console.log('List before unmatchedPair ' + List);
                   setTimeout(function() {unmatchedPair(faceValue,openCard)}, 1000);
-                  console.log("List after unmatchedPair" + List);
                 };
                 openCardContent = [];
               };
-          console.log("List after elseif !open is " +List);
           return false;
         } else { //if the card is already face up but clicked again, turn face down
           clicked.classList.toggle('open');
           clicked.classList.toggle('show');
-          console.log("turning card back face down " + List);
           faceValue = '';
           openCardContent = [];
           return false;
@@ -99,16 +127,16 @@ function processClicks(event) {
   return false;
 };
 
-//this checks for another open card,if there is another open card it checks for match.  If there's a match it returns true, and resets openCard to "".
+/*This checks for another open card,if there is another open card it checks for match.
+ *If there's a match it returns true.
+ */
 function checkMatch(faceValue, openCard) {
-  console.log('initial value of openCardContent[0] in checkMatch is ' + openCard);
   var cardList = document.getElementsByTagName('li');
     if (faceValue === openCard) { //if clicked card matches already open card
       for (var i = 0; i <cardList.length; i++) {
         var findCard = cardList.item(i);
 //        console.log("There's already an open card, checking" + 'cardList.item(i) is ' + findCard);
         if (findCard.innerHTML === faceValue) {
-          console.log('match found');
           findCard.classList.add('match');
         };
       };
@@ -117,16 +145,8 @@ function checkMatch(faceValue, openCard) {
       return false;
     };
 };
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
-//const faceUp = 'card open show';
-//for (var i = 0; i < currentCards.length; i++){
-//  currentCards[i].className = faceUp;
-//}
+
+
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
@@ -143,44 +163,24 @@ function shuffle(array) {
 }
 
 
-
-function resetTimer() {
-//  console.log('resetting timer');
-};
-function resetStars() {
-//  console.log('resetting stars');
-};
-
-function resetMoveCounter() {
-//  console.log('resetting moves');
-};
-
-function showBeforeTurn(findCard) {
-//  findCard.classList.remove("open");
-//  findCard.classList.remove("show");
-//  console.log("classList after time delay " + findCard.classList);
-};
-
+/*This flips unmatched cards back face down, meaning it removes the open class
+* from the unmatched selected pair after a 1 second delay.
+*/
 function unmatchedPair(faceValue,openCard) {
-  console.log("faceValue = " +faceValue);
-  console.log("openCardContent " +openCard);
   var cardList = document.getElementsByTagName('li');
   for (var i = 0; i <cardList.length; i++) {
-//      console.log(cardList.item(i).classList + "before");
       if (cardList.item(i).innerHTML === faceValue) {
         cardList.item(i).classList.remove('open');
         cardList.item(i).classList.remove('show');
-        console.log('flip face down faceValue card');
       };
       if (cardList.item(i).innerHTML === openCard) {
         cardList.item(i).classList.remove('open');
         cardList.item(i).classList.remove('show');
-        console.log('flip face down openCardContent card');
-
       };
     };
   };
 
+//This track the number of moves, or clicks until all the cards are matched.
 function recordMoves() {
   moves = moves+1;
   if (moves === 1) {
@@ -188,11 +188,10 @@ function recordMoves() {
   };
   var move = document.getElementsByClassName('moves');
   move[0].innerHTML = moves;
-//  console.log("moves is now" + move[0]);
   starTracker(moves);
 };
 
-
+//This tracks the number of matches and triggers gameEnd when the last match is achieved.
 function checkNumberOfMatches() {
   matchNum = matchNum +1;
   if (matchNum === 8) {
@@ -202,6 +201,7 @@ function checkNumberOfMatches() {
   }
 };
 
+//This tracks and displays elapsed game time in seconds
 function startTimer() {
   if (!gameEnd) {
     seconds++;
@@ -210,27 +210,18 @@ function startTimer() {
   };
 };
 
+//Based on the number of moves, this tracks and displays a star rating of performance.
 function starTracker(moves) {
-  if (moves===30 || moves===42) {
+  if (moves===36 || moves===48) {
     var lis = document.querySelectorAll('#starPanel li');
     lis[0].parentNode.removeChild(lis[0]);
     starCount--;
   };
 };
 
+//This displays a modal at the end of the game with a final scoreboard and a reset button
 function postModal() {
   console.log("final time is " + finalTime);
   console.log("you scored " + starCount + "stars");
 
 };
-
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
