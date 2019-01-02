@@ -13,16 +13,18 @@ var seconds = 0;
 var finalTime = 0;
 var starCount = 3;
 gameEnd = false;
+var myTime = '';
 
 //Set all EventListeners
 
 var newDeck = document.getElementById('showingDeck');
 newDeck.addEventListener('click', processClicks);
-//var resetButton = document.getElementsByClassName('restart');
-//resetButton.addEventListener('click', resetGame);
+var playAgain = document.getElementById('playAgain');
+playAgain.addEventListener('click', newGame);
+var restart = document.getElementsByClassName('restart');
+restart[0].addEventListener('click', resetGame);
 
 //Start the game
-
 resetGame();
 
 
@@ -33,12 +35,12 @@ function resetGame() {
 // reset all global variables
 
   openCardContent = [];
-  var shuffledCards = [];
-  var matchNum = 0;
-  var moves = 0;
-  var seconds = 0;
-  var finalTime = 0;
-  var starCount = 3;
+  shuffledCards = [];
+  matchNum = 0;
+  moves = 0;
+  seconds = 0;
+  finalTime = 0;
+  starCount = 3;
   gameEnd = false;
 
   //build deck with all class 'card' elements
@@ -51,7 +53,7 @@ function resetGame() {
     };
   };
 
-  //shuffle the deck
+  //shuffle the deck and deals them onto page
 
   shuffledCards = shuffle(currentCards);
   var lis = document.querySelectorAll('#showingDeck li');
@@ -66,6 +68,14 @@ function resetGame() {
     li.className = 'card';
     document.getElementById("showingDeck").appendChild(li);
   };
+
+  //resets stars, moves, and time
+  stopTimer();
+  document.getElementById('timer').innerHTML = seconds + " Seconds";
+  resetStars();
+  var move = document.getElementsByClassName('moves');
+  move[0].innerHTML = moves;
+
 };
 
 
@@ -206,7 +216,7 @@ function startTimer() {
   if (!gameEnd) {
     seconds++;
     document.getElementById('timer').innerHTML = seconds + " Seconds";
-    setTimeout(startTimer, 1000);
+    myTime = setTimeout(startTimer, 1000);
   };
 };
 
@@ -219,9 +229,33 @@ function starTracker(moves) {
   };
 };
 
-//This displays a modal at the end of the game with a final scoreboard and a reset button
-function postModal() {
-  console.log("final time is " + finalTime);
-  console.log("you scored " + starCount + "stars");
+//This function closes the modal and restarts the game
+function newGame() {
+    endModal.close();
+    resetGame();
+  };
 
-};
+//This function posts the final score values to a congrats modal
+ function postModal() {
+     document.getElementById('starsModal').innerHTML = starCount;
+     document.getElementById('movesModal').innerHTML = moves;
+     document.getElementById('timerModal').innerHTML = seconds;
+     endModal.showModal();
+ };
+
+//This function sets the webpage back to 3 stars
+  function resetStars() {
+    var lis = document.querySelectorAll('#starPanel li');
+    var star = lis[0];
+    if (lis.length === 1) {
+        lis.parentNode.appendChild(lis[0]);
+        lis.parentNode.appendChild(lis[0]);
+    } else if (lis.length === 2) {
+      star.parentNode.appendChild(lis[0]);
+    };
+  };
+
+//This function stop the timer for the game
+  function stopTimer() {
+    clearTimeout(myTime);
+  };
